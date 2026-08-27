@@ -1,0 +1,19 @@
+[project]
+name = "agente-agno"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Guilherme", email = "guimars22@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "agno>=3.0.1",
+]
+
+[project.scripts]
+agente-agno = "agente_agno:main"
+
+[build-system]
+requires = ["uv_build>=0.12.6,<0.13.0"]
+build-backend = "uv_build"
