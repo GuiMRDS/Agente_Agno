@@ -9,6 +9,8 @@ authors = [
 requires-python = ">=3.14"
 dependencies = [
     "agno>=3.0.1",
+    "groq>=1.7.0",
+    "python-dotenv>=1.2.3",
 ]
 
 [project.scripts]
