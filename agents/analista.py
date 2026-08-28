@@ -12,8 +12,6 @@ load_dotenv()
 
 agent = Agent(
     name="Analista Financeiro",
-    session_id='session_1',
-    user_id='user_id',
     model=Groq(id="openai/gpt-oss-20b"),
     tools=[YFinanceTools()],
     instructions="Use tabelas para motrar informações final. Não inclua nenhum outro texto",
@@ -22,6 +20,6 @@ agent = Agent(
     num_history_runs=3,
 )
 
-agent.print_response("Qual é a contação Petrobras")
-agent.print_response("Qual é a contação Vale")
+agent.print_response("Qual é a contação Petrobras", session_id='pretobras_session', user_id='analista Petrobras')
+agent.print_response("Qual é a contação Vale", session_id='vale_session', user_id='analista Vale')
 agent.print_response("Quais empresas já consultamos a cotação")
