@@ -4,6 +4,8 @@ from agno.models.groq import Groq
 from agno.tools.yfinance import YFinanceTools
 
 import os
+
+from agno.utils.streamlit import add_message
 from dotenv import load_dotenv
 
 db = SqliteDb(db_file="tmp/agno.db")
@@ -18,6 +20,7 @@ agent = Agent(
     add_history_to_context=True,
     num_history_runs=3,
     add_memories_to_context=True,
+    enable_agentic_memory=True,
 )
 
 
