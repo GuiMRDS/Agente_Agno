@@ -25,13 +25,13 @@ agent = Agent(
 #    "Olá, prefiro as respostas em formanto de tabelas, gosto de poucas informações.",
 #    session_id='pretobras_session_1',
 #    user_id='analista_petrobras_1'
-#)
+# )
 
 # agent.print_response(
 #    "Olá, prefiro as respostas em formanto de texto, gosto de bastantes detalhes.",
 #   session_id='vale_session_1',
 #   user_id='analista_vale_1'
-#)
+# )
 
 
 
