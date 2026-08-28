@@ -7,7 +7,6 @@ import os
 from dotenv import load_dotenv
 
 db = SqliteDb(db_file="tmp/agno.db")
-
 load_dotenv()
 
 agent = Agent(
@@ -20,6 +19,6 @@ agent = Agent(
     num_history_runs=3,
 )
 
-agent.print_response("Qual é a contação Petrobras", session_id='pretobras_session', user_id='analista Petrobras')
-agent.print_response("Qual é a contação Vale", session_id='vale_session', user_id='analista Vale')
-agent.print_response("Quais empresas já consultamos a cotação")
+agent.print_response("Qual é a contação Petrobras", session_id='pretobras_session', user_id='analista_petrobras')
+agent.print_response("Qual é a contação Vale", session_id='vale_session', user_id='analista_vale')
+agent.print_response("Quais empresas já consultamos a cotação", session_id='pretobras_session', user_id='analista_empresas')
