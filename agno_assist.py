@@ -3,6 +3,10 @@ from agno.db.sqlite import SqliteDb
 from agno.models.groq import Groq
 from agno.os import AgentOS
 
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 db = SqliteDb(db_file="agno.db")
 
 agent = Agent(
