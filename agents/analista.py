@@ -14,6 +14,6 @@ agent = Agent(
     instructions="Use tabelas para motrar informações final. Não inclua nenhum outro texto"
 )
 
-agent.print_response(
-    "Qual é a contação atual da APPLE"
-)
+agent.print_response("Qual é a contação Petrobras")
+agent.print_response("Qual é a contação Vale")
+agent.print_response("Quausi empresas já consultamos a cotação")
