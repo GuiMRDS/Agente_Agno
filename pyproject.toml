@@ -9,8 +9,16 @@ authors = [
 requires-python = ">=3.14"
 dependencies = [
     "agno>=3.0.1",
+    "chromadb>=1.5.9",
+    "fastapi>=0.141.1",
     "groq>=1.7.0",
+    "openai>=3.6.0",
+    "pypdf>=6.16.2",
     "python-dotenv>=1.2.3",
+    "sqlalchemy>=2.0.52",
+    "streamlit>=1.62.0",
+    "uvicorn>=0.52.4",
+    "watchdog>=6.0.0",
 ]
 
 [project.scripts]
