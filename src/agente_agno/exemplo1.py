@@ -19,7 +19,7 @@ db = SqliteDb(session_table="agent_session", db_file="tmp/agent.db")
 
 agent = Agent(
     name="Agente de PDF",
-    model=OpenAIChat(id="gpt-5-nano", api_key=os.getenv("GROQ_API_KEY")),
+    model=OpenAIChat(id="gpt-5-nano", api_key=os.getenv("OPENAI_API_KEY")),
     db=db,
     knowledge=knowledge,
     add_history_to_context=True,
