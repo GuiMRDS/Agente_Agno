@@ -1,42 +1,49 @@
-# Conta Corrente Bancária - FastApi
+from agno.agent import Agent
+from agno.db.sqlite import SqliteDb
+from agno.models.groq import Groq
+from agno.os import AgentOS
+from agno.knowledge.knowledge import Knowledge
+from agno.knowledge.reader.pdf_reader import PDFReader
+from agno.vectordb.chroma import ChromaDb
 
-from fastapi import FastAPI
-import uvicorn
-from pydantic import BaseModel, Field
+import os
+from dotenv import load_dotenv, find_dotenv
 
+load_dotenv(find_dotenv())
 
-app = FastAPI(title="Conta Corrente Bancária - FastApi")
+# RAG
+from agno.knowledge.embedder.ollama import OllamaEmbedder
 
-db_client = {
-    "Joao": 1000,
-    "Maria": 20,
-    "Pedro": 3,
-}
-
-class Movimentacao(BaseModel):
-    cliente: str = Field(..., description="Nome do Cliente")
-    valor: float = Field(..., gt=0, description="Valor da Movimentacao")
-
-@app.get("/")
-def read_root():
-    return {"message": "Conta Corrente Bancária - FastApi"}
-
-@app.post("/saldo")
-def saldo(cliente: str):
-    return {"message": f"Saldo do Cliente {cliente} é {db_client[cliente]}"}
-
-@app.post("/saque")
-def saque(movimentacao: Movimentacao):
-   db_client[movimentacao.cliente] -= movimentacao.valor
-   return {"message": f"Cliente: {movimentacao.cliente}, valor_movimentação {db_client[movimentacao.cliente]}",
-           "saldo": {db_client[movimentacao.cliente]}}
-
-@app.post("/deposito")
-def deposito(movimentacao: Movimentacao):
-    db_client[movimentacao.cliente] += movimentacao.valor
-    return {"message": f"Cliente: {movimentacao.cliente}, valor_movimentação {db_client[movimentacao.cliente]}",
-            "saldo": {db_client[movimentacao.cliente]}}
+vector_db = ChromaDb(
+    collection="pdf_agent_ollama",
+    path="tmp/chromadb",
+    persistent_client=True,
+    embedder=OllamaEmbedder(
+        id="nomic-embed-text"
+    )
+)
+knowledge = Knowledge(vector_db=vector_db)
 
 
+db = SqliteDb(session_table="agent_session", db_file="tmp/agent.db")
+
+agent = Agent(
+    name="Agente de PDF",
+    model=Groq(id="openai/gpt-oss-20b", api_key=os.getenv("GROQ_API_KEY")),
+    db=db,
+    knowledge=knowledge,
+    instructions="Você deve chamar o usuário de Guilherme",
+    description="",
+    search_knowledge=True,
+    num_history_runs=3,
+    debug_mode=True
+)
+
+# AGENT OS ===========================================================
+agent_os = AgentOS(
+    agents=[agent],
+)
+
+# RUN ===========================================================
 if __name__ == "__main__":
-    uvicorn.run("exemplo2:app", host="0.0.0.0", port=8000, reload=True)
+    agent_os.serve(app="exemplo2:app", reload=True)
