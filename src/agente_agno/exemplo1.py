@@ -16,10 +16,10 @@ from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 
 # RAG
-from agno.embedder.ollama import OllamaEmbedder
+from agno.knowledge.embedder.ollama import OllamaEmbedder
 
 vector_db = ChromaDb(
-    collection="pdf_agent",
+    collection="pdf_agent_ollama",
     path="tmp/chromadb",
     persistent_client=True,
     embedder=OllamaEmbedder(
@@ -52,10 +52,14 @@ def agent_pdf(pergunta: str):
 
 # RUN ===========================================================
 if __name__ == "__main__":
-    asyncio.run(knowledge.add_content_async(
+    knowledge.insert(
         path="D:/Projetos/Temp/ws-pycharm/Agente_Agno/pdf_exemplo/Currículo.pdf",
-        metadata={"source": "Guilherme", "type": "pdf", "description": "Currículo"},
-        skip_if_exists=True,
-        reader=PDFReader()
-    ))
-    uvicorn.run("exemplo1.py", host="0.0.0.0", port=8000, reload=True)
+        reader=PDFReader(),
+        skip_if_exists=True
+    )
+    uvicorn.run(
+        "exemplo1:app",
+        host="0.0.0.0",
+        port=8000,
+        reload=True
+    )
