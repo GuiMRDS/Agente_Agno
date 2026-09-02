@@ -26,7 +26,7 @@ vector_db = ChromaDb(
 knowledge = Knowledge(vector_db=vector_db)
 
 
-db = SqliteDb(session_table="agent_session", db_file="tmp/agent.db")
+db = SqliteDb(session_table="agent_session", db_file="tmp/chromadb/agente_pdf")
 
 agent = Agent(
     name="Agente de PDF",
@@ -55,9 +55,9 @@ if __name__ == "__main__":
         skip_if_exists=True
     )
     uvicorn.run(
-        "exemplo1:app",
+        "agente_pdf:app",
         host="0.0.0.0",
         port=8000,
         reload=True
     )
-    agent_os.serve(app="exemplo2:app", reload=True)
+    agent_os.serve(app="agente_pdf:app", reload=True)
