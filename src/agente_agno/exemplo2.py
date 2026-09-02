@@ -1,5 +1,7 @@
+import uvicorn
 from agno.agent import Agent
 from agno.db.sqlite import SqliteDb
+from agno.knowledge.reader.pdf_reader import PDFReader
 from agno.models.groq import Groq
 from agno.os import AgentOS
 from agno.knowledge.knowledge import Knowledge
@@ -14,7 +16,7 @@ load_dotenv(find_dotenv())
 from agno.knowledge.embedder.ollama import OllamaEmbedder
 
 vector_db = ChromaDb(
-    collection="pdf_agent_ollama",
+    collection="agente_pdf",
     path="tmp/chromadb",
     persistent_client=True,
     embedder=OllamaEmbedder(
@@ -40,11 +42,22 @@ agent = Agent(
 
 # AGENT OS ===========================================================
 agent_os = AgentOS(
+    name = "Agente PDF",
     agents=[agent],
 )
-
 app = agent_os.get_app()
 
 # RUN ===========================================================
 if __name__ == "__main__":
+    knowledge.insert(
+        path="D:/Projetos/Temp/ws-pycharm/Agente_Agno/pdf_exemplo/Currículo.pdf",
+        reader=PDFReader(),
+        skip_if_exists=True
+    )
+    uvicorn.run(
+        "exemplo1:app",
+        host="0.0.0.0",
+        port=8000,
+        reload=True
+    )
     agent_os.serve(app="exemplo2:app", reload=True)
