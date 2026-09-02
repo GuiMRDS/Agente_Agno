@@ -6,7 +6,7 @@ from agno.knowledge.knowledge import Knowledge
 from agno.knowledge.reader.pdf_reader import PDFReader
 from agno.vectordb.chroma import ChromaDb
 
-from fastapi import FastAPI
+from banco_api import FastAPI
 import uvicorn
 import asyncio
 

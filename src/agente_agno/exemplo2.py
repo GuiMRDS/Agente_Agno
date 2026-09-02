@@ -3,7 +3,6 @@ from agno.db.sqlite import SqliteDb
 from agno.models.groq import Groq
 from agno.os import AgentOS
 from agno.knowledge.knowledge import Knowledge
-from agno.knowledge.reader.pdf_reader import PDFReader
 from agno.vectordb.chroma import ChromaDb
 
 import os
@@ -43,6 +42,8 @@ agent = Agent(
 agent_os = AgentOS(
     agents=[agent],
 )
+
+app = agent_os.get_app()
 
 # RUN ===========================================================
 if __name__ == "__main__":

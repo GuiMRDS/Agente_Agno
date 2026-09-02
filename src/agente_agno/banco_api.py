@@ -1,6 +1,6 @@
 # Conta Corrente Bancária - FastApi
 
-from fastapi import FastAPI
+from banco_api import FastAPI
 import uvicorn
 from pydantic import BaseModel, Field
 
