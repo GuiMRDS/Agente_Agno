@@ -1,40 +1,48 @@
-import requests
 import json
-from pprint import pprint
+import requests
 
-AGENT_ID = "agente_pdf"
-ENDPOINT_URL = f"http://localhost:7777/agents/{AGENT_ID}/runs"
+AGENT_ID = "server-agente"
+
+ENDPOINT_URL = f"http://localhost:8000/agents/{AGENT_ID}/runs"
 
 
-def get_response_strem(message: str):
+def get_response_stream(message: str):
     response = requests.post(
-        url=ENDPOINT_URL,
-        data={
-            "message": message,
-            "strem": "true"
+        ENDPOINT_URL,
+        files={
+            "message": (None, message),
+            "stream": (None, "true")
         },
         stream=True
     )
 
-    for line in response.iter_lines():
-        if line:
-            if line.startswith(b'data: '):
-                data = line[6:]
-                try:
-                    event = json.loads(data)
-                    yield event
-                except json.decoder.JSONDecodeError:
-                    continue
+    if response.status_code != 200:
+        print(response.text)
+        return
 
+    for line in response.iter_lines():
+        if not line:
+            continue
+
+        if line.startswith(b"data: "):
+            try:
+                yield json.loads(line[6:])
+            except json.JSONDecodeError:
+                pass
 
 
 def print_stream_response(message: str):
-    for event in get_response_strem(message):
-        event_type = event.get("event", "")
-        print(event_type)
+    for event in get_response_stream(message):
 
+        event_type = event.get("event")
+
+        if event_type == "RunContent":
+            print(event.get("content", ""), end="", flush=True)
+
+        elif event_type == "RunCompleted":
+            print("\n")
 
 
 if __name__ == "__main__":
-    message = input("Digite uma mensagem: ")
-    print_stream_response(message)
+    pergunta = input("Digite uma mensagem: ")
+    print_stream_response(pergunta)
