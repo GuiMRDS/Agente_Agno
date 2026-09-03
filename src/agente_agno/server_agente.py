@@ -37,18 +37,6 @@ agent_os = AgentOS(
 app = agent_os.get_app()
 
 if __name__ == "__main__":
-    print("Servidor iniciado em http://localhost:8000")
-
-    print("\n=== AGENTES REGISTRADOS ===")
-    print(agent)
-
-    print("\n=== ROTAS ===")
-    for route in app.routes:
-        try:
-            print(route.path)
-        except Exception:
-            pass
-
     uvicorn.run(
         app,
         host="0.0.0.0",
