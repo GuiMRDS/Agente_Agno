@@ -29,7 +29,7 @@ knowledge = Knowledge(vector_db=vector_db)
 db = SqliteDb(session_table="agent_session", db_file="tmp/agent.db")
 
 agent = Agent(
-    name="Agente de PDF",
+    name="server_agente",
     model=Groq(id="openai/gpt-oss-20b", api_key=os.getenv("GROQ_API_KEY")),
     db=db,
     knowledge=knowledge,
@@ -60,4 +60,4 @@ if __name__ == "__main__":
         port=8000,
         reload=False
     )
-    agent_os.serve(app="agente_pdf:app", reload=True)
+    agent_os.serve(app="server_agente:app", reload=True)

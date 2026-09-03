@@ -16,12 +16,25 @@ def get_response_strem(message: str):
         stream=True
     )
 
-    return type(response)
+    for line in response.iter_lines():
+        if line:
+            if line.startswith(b'data: '):
+                data = line[6:]
+                try:
+                    event = json.loads(data)
+                    yield event
+                except json.decoder.JSONDecodeError:
+                    continue
 
+
+
+def print_stream_response(message: str):
+    for event in get_response_strem(message):
+        event_type = event.get("event", "")
+        print(event_type)
 
 
 
 if __name__ == "__main__":
     message = input("Digite uma mensagem: ")
-    response = get_response_strem(message)
-    print(response)
+    print_stream_response(message)
